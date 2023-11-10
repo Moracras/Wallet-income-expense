@@ -53,15 +53,14 @@
       <table class="table ">
         <thead class="table-primary">
           <tr>
-            <th scope="col" class="col-2">Date</th>
+            <th scope="col" class="col-3">Date</th>
             <th scope="col" class="col-6">Spending</th>
             <th scope="col" class="col-2">amount</th>
             <th scope="col" class="col-2">process</th>
           </tr>
         </thead>
         <tbody id="showSpending">
-          
-        
+                 
         </tbody>
       </table>
       <table class="container table col-4">
@@ -83,14 +82,60 @@
       </table>
       <button type="submit" class="col-2 btn btn-primary mb-3">Form Clear</button>
     </div>
+<script>
+  let inputdate = document.querySelector("#inputdate")
+  let inputHM = document.querySelector("#inputHM")
+  let inputHA = document.querySelector("#inputHA")
+  let inputbtn = document.querySelector("#inputbtn")
+  
+  let showSpending = document.querySelector("#showSpending")
+  let expense = document.querySelector("#expense")
 
-<script src="wallet.js"></script>
+  const addStorage = (addData) => {
+      localStorage.spending = JSON.stringify(addData)
+    }
+    const getStorage = () => {
+      if (localStorage?.spending) {
+        return JSON.parse(localStorage?.spending)
+      } else {
+        return []
+      }
+    }
+  let data= getStorage()
+console.log(data);
+  const show = () =>{
+    showSpending.innerHTML = ""
+    let getData = getStorage()
+    getData.forEach(item => {
+      showSpending.innerHTML +=`<tr>
+            <th scope="row">${item.date}</th>
+            <td>${item.ha}</td>
+            <td>${item.hm}</td>
+            <td>sil</td>
+          </tr>`
+    });
+    expense.innerText= getExpense()
+  }
+
+  const getExpense = () =>{
+    let getData = getStorage()
+    return getData.map(item=>item.hm).reduce((sum,item)=> sum*1+item*1)
+    
+  }
+
+  inputbtn.addEventListener("click",(e)=>{
+    e.preventDefault()
+    let newData = {date:inputdate.value,hm:inputHM.value,ha:inputHA.value}
+    data.push(newData)
+    console.log(data);
+    addStorage(data)
+    show()
+  })
+
+  show()
+  
+
+</script>
 </body>
 
 </html>
-    
-    
-    
-    
-    
-
