@@ -26,25 +26,33 @@
         <input type="date"  class="form-control" id="inputdate" >
       </div>
       <div class="col-md-6">
-        <label for="inputSA" class="form-label">Income/Expense</label>
-        <input type="number" class="form-control" id="inputSA">
+        <label for="inputSA" class="form-label">Income/Expense</label><select name="" id="selectIoE" class="select-option text-center w-100 h-50">
+          <option  id="income" selected>Income</option>
+          <option  id="expensee">Expense</option>
+        
+      </select>
       </div>
       <div class="col-6">
         <label for="inputSC" class="form-label">Description</label>
         <input type="text" class="form-control" id="inputSC" placeholder="Food,Fuel,Salary etc.">
       </div>
-      <div class="col-6">
+      <div class=" col-6">
         <label for="select-option" class="form-label">Currency Type</label>
-            <select name="" id="select" class="select-option text-center w-100 h-50">
-                <option value="Resource" id="tl" selected>TL</option>
-                <option value="Resource" id="dinar">Kuwaiti Dinar</option>
-                <option value="Resource" id="euro">EURO</option>
-                <option value="Resource" id="usd">USD</option>
-                <option value="Resource" id="gold">Gold/gr</option>
+            <select name="select-options" id="selectOptions" class="select-option text-center w-100 h-50 " >
+                <option  id="tl" selected>TL</option>
+                <option  id="dinar">Kuwaiti Dinar</option>
+                <option  id="euro">EURO</option>
+                <option  id="usd">USD</option>
+                <option  id="gold">Gold/gr</option>
+                
             </select>
        
-        
+            
        
+      </div>
+      <div class="col-md-12">
+        <label for="Amount" class="form-label">Amount</label>
+        <input type="number"  class="form-control" id="amountCurrency" placeholder="Please Enter Amount" >
       </div>
 
       <div class="col-12 mt-3 text-center">
@@ -57,7 +65,9 @@
         <thead class="table-primary">
           <tr>
             <th scope="col" class="col-2">Date</th>
-            <th scope="col" class="col-6">Spending</th>
+            <th scope="col" class="col-2">IncomeOrExpense</th>
+            <th scope="col" class="col-6">Description</th>
+            <th scope="col" class="col-2">Currency Type</th>
             <th scope="col" class="col-2">amount</th>
             <th scope="col" class="col-2">process</th>
           </tr>
@@ -88,6 +98,8 @@
     </div>
 
 <script src="wallet.js"></script>
+
+
 </body>
 
 </html>

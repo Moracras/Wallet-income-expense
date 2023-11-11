@@ -1,9 +1,14 @@
 let inputdate = document.querySelector("#inputdate")
-let inputSA = document.querySelector("#inputSA")
+
 let inputSC = document.querySelector("#inputSC")
+
+let inputA = document.querySelector("#amountCurrency")
 let inputbtn = document.querySelector("#inputbtn")
+
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
+
+
 
 
 
@@ -27,42 +32,48 @@ const show = () =>{
     getData.forEach(item =>{
         showSpending.innerHTML +=`<tr>
         <th scope="row">${item.date}</th>
-        <td>${item.ha}</td>
-        <td>${item.hm}</td>
+        <td>${item.ioe}</td>
+        <td>${item.desc}</td>
+        <td>${item.ct}</td>
+        <td>${item.ia}</td>
         <td>Remove</td>
       </tr>
         `
     });
-    expense.innerText = getExpense()
+    expense.innerText = getIncomeExpense()
 }
+const selectedCT= ()=>{
+    const selectCT =document.getElementById("selectOptions")
+     return selectCT.options[selectCT.selectedIndex].value
+    
+}
+const selectedIncOrExp = () =>{
+    const selectIoE = document.getElementById("selectIoE")
+    return selectIoE.options[selectIoE.selectedIndex].value
+}
+
 
 const getIncomeExpense = () => {
     let getData = getStorage();
-    return getData.map(item => parseInt(item.hm) || 0).reduce((sum, item) => sum + item, 0);
+    return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0);
   }
 inputbtn.addEventListener("click", (e) => {
-    e.preventDefault(); // Prevent the default form submission or button click behavior
-
-    // Create a new object with properties based on input field values
+    e.preventDefault(); 
     let newData = {
         date: inputdate.value,
-        hm: inputSA.value,
-        ha: inputSC.value
+        ioe:selectedIncOrExp(),
+        desc: inputSC.value,
+        ct: selectedCT(),
+        ia: inputA.value,
     };
 
-    // Add the new object to the data array
     data.push(newData);
-
-    // Log the updated data array to the console
     console.log(data);
-
-    // Call the addStorage function to update storage
     addStorage(data);
-
-    // Call the show function to update the UI
     show();
 });
 
 
 
 show()
+
