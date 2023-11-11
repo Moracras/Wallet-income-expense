@@ -1,9 +1,11 @@
 let inputdate = document.querySelector("#inputdate")
-let inputHM = document.querySelector("#inputHM")
-let inputHA = document.querySelector("#inputHA")
+let inputSA = document.querySelector("#inputSA")
+let inputSC = document.querySelector("#inputSC")
 let inputbtn = document.querySelector("#inputbtn")
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
+
+
 
 
 const addStorage = (addData) =>{
@@ -27,14 +29,14 @@ const show = () =>{
         <th scope="row">${item.date}</th>
         <td>${item.ha}</td>
         <td>${item.hm}</td>
-        <td>sil</td>
+        <td>Remove</td>
       </tr>
         `
     });
     expense.innerText = getExpense()
 }
 
-const getExpense = () => {
+const getIncomeExpense = () => {
     let getData = getStorage();
     return getData.map(item => parseInt(item.hm) || 0).reduce((sum, item) => sum + item, 0);
   }
@@ -44,8 +46,8 @@ inputbtn.addEventListener("click", (e) => {
     // Create a new object with properties based on input field values
     let newData = {
         date: inputdate.value,
-        hm: inputHM.value,
-        ha: inputHA.value
+        hm: inputSA.value,
+        ha: inputSC.value
     };
 
     // Add the new object to the data array
