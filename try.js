@@ -4,7 +4,7 @@ let inputA = document.querySelector("#amountCurrency")
 let inputbtn = document.querySelector("#inputbtn")
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
-
+let formClear = document.querySelector("#formClear")
 const exchangeRatesToLira ={USD:28.55,EURO:30.51,GBP:34.90,KWD:92.09,Gold:1776.88
 }
 
@@ -18,77 +18,41 @@ const getStorage =() =>{
         return JSON.parse(localStorage?.spending)
     }else {
         return []
-    }
-    
+    }  
 }
+const removeData = (index) => {
+    data.splice(index, 1);
+    addStorage(data);
+};
 let data = getStorage()  || [] 
 const show = () =>{
     showSpending.innerHTML = ""
     let getData = getStorage()
-    getData.forEach(item =>{
-        if (item.ct =="TL"){
-            showSpending.innerHTML +=`<tr>
-        <th scope="row">${item.date}</th>
-        <td>${item.ioe}</td>
-        <td>${item.desc}</td>
-        <td>${item.ct}</td>
-        <td>₺${item.ia}</td>     
-        <td><button style="background-color: crimson; color: white;">Remove</button></td>
-      </tr>
-        `}else if (item.ct =="EURO"){
-            showSpending.innerHTML +=`<tr>
-            <th scope="row">${item.date}</th>
-            <td>${item.ioe}</td>
-            <td>${item.desc}</td>
-            <td>${item.ct}</td>
-            <td>€${item.ia}</td> 
-            <td><button style="background-color: crimson; color: white;">Remove</button></td>
-          </tr>
-            `
-        }else if (item.ct =="USD"){
-            showSpending.innerHTML +=`<tr>
-            <th scope="row">${item.date}</th>
-            <td>${item.ioe}</td>
-            <td>${item.desc}</td>
-            <td>${item.ct}</td>
-            <td>$${item.ia}</td>
-            <td><button style="background-color: crimson; color: white;">Remove</button></td>
-          </tr>
-            `
-        }else if (item.ct =="GBP"){
-            showSpending.innerHTML +=`<tr>
-            <th scope="row">${item.date}</th>
-            <td>${item.ioe}</td>
-            <td>${item.desc}</td>
-            <td>${item.ct}</td>
-            <td>£${item.ia}</td> 
-            <td><button style="background-color: crimson; color: white;">Remove</button></td>
-          </tr>
-            `
-        }else if (item.ct =="KWD"){
-            showSpending.innerHTML +=`<tr>
-            <th scope="row">${item.date}</th>
-            <td>${item.ioe}</td>
-            <td>${item.desc}</td>
-            <td>${item.ct}</td>
-            <td>د.ك${item.ia}</td> 
-            <td><button style="background-color: crimson; color: white;">Remove</button></td>
-          </tr>
-            `
-        }else if (item.ct =="Gold"){
-            showSpending.innerHTML +=`<tr>
-            <th scope="row">${item.date}</th>
-            <td>${item.ioe}</td>
-            <td>${item.desc}</td>
-            <td>${item.ct}</td>
-            <td>🟡${item.ia}</td> 
-            <td><button style="background-color: crimson; color: white;">Remove</button></td>
-          </tr>
-            `
-        }   
-    });
+    getData.forEach((item,index) =>{
+        const convertedMoney = convertingExchange(exchangeRatesToLira, item.ct, item.ia);
+        let row = `
+            <tr>
+                <th scope="row">${item.date}</th>
+                <td>${item.ioe}</td>
+                <td>${item.desc}</td>
+                <td>${item.ct}</td>
+                <td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : "🟡"}${item.ia}</td> 
+                <td><button class="remove-btn" data-index="${index}" style="background-color: crimson; color: white;">Remove</button></td>
+            </tr>
+        `;
+        showSpending.innerHTML += row;
+    })
      writeIncomeExpense()
-}
+     const removeButtons = document.querySelectorAll(".remove-btn");
+     removeButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const indexToRemove = e.target.dataset.index;
+            removeData(indexToRemove);
+            show();
+        });
+    });
+};
+
 
 const selectedCT= ()=>{
     const selectCT =document.getElementById("selectOptions")
@@ -103,9 +67,7 @@ const selectedIncOrExp = () =>{
 const convertingExchange = (exchangeRatesToLira,currentCT,inputA)=>{   
     if(currentCT =="TL") return  inputA;
     
-    return inputA*exchangeRatesToLira[currentCT]
-       
-    
+    return inputA*exchangeRatesToLira[currentCT] 
     // switch (selectedCT){
     //     case 'USD':
     //         return    exchangeRatesToLira['USD']*inputA;
@@ -155,6 +117,14 @@ const writeIncomeExpense = () => {
     remain.innerText = (totalIncome - totalExpense).toFixed(2)
     // return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0);
 }
+
+//clearing all data
+function clearLocalStorage(){
+    localStorage.clear();
+    
+}
+
+
 inputbtn.addEventListener("click", (e) => {
     e.preventDefault();
 
@@ -169,6 +139,7 @@ inputbtn.addEventListener("click", (e) => {
     data.push(newData);
     console.log(data);
     addStorage(data);
+    formClear.addEventListener("click",clearLocalStorage)
     show();
 });
 
