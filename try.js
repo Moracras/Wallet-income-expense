@@ -1,10 +1,12 @@
 let inputdate = document.querySelector("#inputdate")
 let inputSC = document.querySelector("#inputSC")
 let inputA = document.querySelector("#amountCurrency")
+let selectIE = document.querySelector("#selectIoE")
 let inputbtn = document.querySelector("#inputbtn")
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
 let formClear = document.querySelector("#formClear")
+let formSituation = document.querySelector("#formInfo")
 const exchangeRatesToLira ={USD:28.55,EURO:30.51,GBP:34.90,KWD:92.09,Gold:1776.88
 }
 
@@ -36,7 +38,7 @@ const show = () =>{
                 <td>${item.ioe}</td>
                 <td>${item.desc}</td>
                 <td>${item.ct}</td>
-                <td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : "🟡"}${item.ia}</td> 
+                <td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : item.ct ==="Gold"? "🟡":""}${item.ia}</td> 
                 <td><button class="remove-btn" data-index="${index}" style="background-color: crimson; color: white;">Remove</button></td>
             </tr>
         `;
@@ -52,6 +54,15 @@ const show = () =>{
         });
     });
 };
+changingBtnColor=function changeButtonColor(){
+    if (selectIE.value =="Income"){
+        inputbtn.style.backgroundColor="green";
+    }else if (selectIE.value =="Expense"){
+        inputbtn.style.backgroundColor="red";
+    }else {
+        inputbtn.style.backgroundColor="blue";
+    }
+}
 
 
 const selectedCT= ()=>{
@@ -93,7 +104,8 @@ const convertingExchange = (exchangeRatesToLira,currentCT,inputA)=>{
     //         return inputA
     // }
   }
-console.log(selectedCT);
+
+
 
 
 const writeIncomeExpense = () => {
@@ -115,18 +127,25 @@ const writeIncomeExpense = () => {
     expense.innerText = totalExpense.toFixed(2)
     income.innerText = totalIncome.toFixed(2)
     remain.innerText = (totalIncome - totalExpense).toFixed(2)
-    // return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0);
+    // return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0); //only total expense calc
 }
+//resetting form
 
 //clearing all data
 function clearLocalStorage(){
     localStorage.clear();
+      
     
 }
+formClear.addEventListener("click", ()=>{
+    clearLocalStorage()
+    writeIncomeExpense()
+    show()
+}),
 
 
-inputbtn.addEventListener("click", (e) => {
-    e.preventDefault();
+formSituation.addEventListener("submit", (event) => {
+    event.preventDefault();
 
     let newData = {
         date: inputdate.value,
@@ -135,11 +154,12 @@ inputbtn.addEventListener("click", (e) => {
         ct: selectedCT(),
         ia:inputA.value
     };
+   
 
     data.push(newData);
     console.log(data);
     addStorage(data);
-    formClear.addEventListener("click",clearLocalStorage)
+    formSituation.reset()
     show();
 });
 
