@@ -52,7 +52,8 @@ harcamaFormu.addEventListener("submit", (e) =>{
 
     const yeniHarcama = {
         id: new Date().getTime(),
-        tarih: tarihInput.value,
+        // tarih: tarihInput.value,
+        tarih: new Date() (tarihInput.value).toLocaleDateString(),
         alan: harcamaAlaniInput.value,
         miktar: miktarInput.value
     }
@@ -110,13 +111,15 @@ const harcamayiDomaYaz = ({id, miktar, tarih,alan}) =>{
 }
 
 const hesaplaVeGuncelle = () =>{
-    gelirinizTd.innerText = gelirler
+    // gelirinizTd.innerText = gelirler //geliri ekrana yaz
+    gelirinizTd.innerText = new Intl.NumberFormat().format(gelirler) // geliri ekrana yaz
 
+    //giderler toplamı
     const giderler = harcamaListesi.reduce(
         (toplam, harcama) => toplam + Number(harcama.miktar),0
     )
-    giderinizTd.innerText = giderler //giderler toplamı ekrana yazdırır
-    kalanTd.innerText = gelirler - giderler
+    giderinizTd.innerText = new Intl.NumberFormat().format(giderler) //giderler toplamı ekrana yazdırır
+    kalanTd.innerText = new Intl.NumberFormat().format(gelirler - giderler)
 
     const borclu = gelirler - giderler < 0;
 
@@ -128,6 +131,28 @@ harcamaBody.addEventListener("click",(e) =>{
     console.log(e.target);
 
     if (e.target.classList.contains("fa-trash-can")){
-        
+        e.target.parentElement.parentElement.remove()
+
+    }
+    const id =e.target.id
+// silinen harcmayı arrayden cıkarır
+    harcamaListesi = harcamaListesi.filter((harcama => harcama.id != id))
+
+    // yeni arrayi locale update eder 
+    localStorage.setItem("harcamalar", JSON.stringify(harcamaListesi))
+    
+    // silinidkten sonra yeniden hesapla
+    hesaplaVeGuncelle()
+})
+
+temizleBtn.addEventListener("click", ()=>{
+    if(confirm("Silmek istediğinize emin misiniz?")){
+        harcamaListesi = [] // tüm harcamaları listeden siler
+        gelirler = 0 // geliri sıfırlar
+        localStorage.clear() // tüm local storage siler
+        localStorage.removeItem('gelirler')//sadece gelirleri siler
+        localStorage.removeItem('harcamalar')// sadece giderleri siler
+        harcamaBody.innerHTML ="" // Dom dan harcamaları siler
+        hesaplaVeGuncelle()
     }
 })
