@@ -27,9 +27,9 @@
       </div>
       <div class="col-md-6">
         <label for="inputSA" class="form-label">Income/Expense</label><select name="" id="selectIoE" class="select-option text-center w-100 h-50">
-          <option  id="income" selected>Income</option>
-          <option  id="expensee">Expense</option>
-        
+          <option  id="optionIncome" selected>Income</option>
+          <option  id="optionExpense">Expense</option>
+      
       </select>
       </div>
       <div class="col-6">
@@ -82,7 +82,7 @@
         <tbody class="col-4">
           <tr>
             <th scope="row">Income</th>
-            <td>5000</td>
+            <td id="income">0</td>
            </tr>
           <tr>
             <th scope="row">Expense</th>
@@ -90,7 +90,7 @@
            </tr>
           <tr>
             <th scope="row">Remain</th>
-            <td>1000</td>
+            <td id="remain">0</td>
            </tr>
         
         </tbody>

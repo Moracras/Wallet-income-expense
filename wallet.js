@@ -1,18 +1,12 @@
 let inputdate = document.querySelector("#inputdate")
-
 let inputSC = document.querySelector("#inputSC")
-
-let inputA = document.querySelector("#amountCurrency").value
+let inputA = document.querySelector("#amountCurrency")
 let inputbtn = document.querySelector("#inputbtn")
-
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
 
 const exchangeRatesToLira ={USD:28.55,EURO:30.51,GBP:34.90,KWD:92.09,Gold:1776.88
 }
-
-
-
 
 
 const addStorage = (addData) =>{
@@ -42,58 +36,72 @@ const show = () =>{
       </tr>
         `
     });
-    expense.innerText = getIncomeExpense()
+     writeIncomeExpense()
 }
 const selectedCT= ()=>{
     const selectCT =document.getElementById("selectOptions")
      return selectCT.options[selectCT.selectedIndex].value
 }
 
+
 const selectedIncOrExp = () =>{
     const selectIoE = document.getElementById("selectIoE")
     return selectIoE.options[selectIoE.selectedIndex].value
 }
-const convertingExchange = (exchangeRatesToLira,selectedCT,inputA)=>{   
-    switch (selectedCT){
-        case 'USD':
-            return    exchangeRatesToLira['USD']*inputA;
+const convertingExchange = (exchangeRatesToLira,currentCT,inputA)=>{   
+    if(currentCT =="TL") return inputA;
+    
+    return inputA*exchangeRatesToLira[currentCT]
+       
+    
+    // switch (selectedCT){
+    //     case 'USD':
+    //         return    exchangeRatesToLira['USD']*inputA;
             
-        case 'EURO':
-            return   exchangeRatesToLira['EURO']*inputA;
+    //     case 'EURO':
+    //         return   exchangeRatesToLira['EURO']*inputA;
 
-        case 'GBP':
-             return  exchangeRatesToLira['GBP']*inputA;
+    //     case 'GBP':
+    //          return  exchangeRatesToLira['GBP']*inputA;
             
-        case 'KWD':
-            return  exchangeRatesToLira['KWD']*inputA;
+    //     case 'KWD':
+    //         return  exchangeRatesToLira['KWD']*inputA;
             
-        case 'Gold':
-            return  exchangeRatesToLira['Gold']*inputA;
+    //     case 'Gold':
+    //         return  exchangeRatesToLira['Gold']*inputA;
+    //     case 'abc':
+        
+    //     case 'xyz' :
+    //         console.log("xyz");
+    //         break    
             
-        default:
-            return inputA
-    }
+    //     default:
+    //         return inputA
+    // }
   }
+console.log(selectedCT);
 
 
-const getIncomeExpense = () => {
+const writeIncomeExpense = () => {
     let getData = getStorage();
     let totalIncome = 0
     let totalExpense = 0
     getData.forEach(item => {
-        if(item.ioe ==="Income"){
-            const convertedMoney=convertingExchange(exchangeRatesToLira,item.ct,item.ia)
+        const convertedMoney=convertingExchange(exchangeRatesToLira,item.ct,item.ia)
+        if(item.ioe ==="Income"){ 
             totalIncome += parseFloat(convertedMoney)
-            console.log(totalIncome);
+            
+            console.log("total income:"+totalIncome);
             
         }else if (item.ioe ==="Expense"){
-            const convertedMoney=convertingExchange(exchangeRatesToLira,item.ct,item.ia)
             totalExpense += parseFloat(convertedMoney)
-            console.log(totalExpense);
+            console.log("total expense:"+totalExpense);
         }
     })
-    
-    return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0);
+    expense.innerText = totalExpense.toFixed(2)
+    income.innerText = totalIncome.toFixed(2)
+    remain.innerText = (totalIncome - totalExpense).toFixed(2)
+    // return getData.map(item => parseInt(item.ia) || 0).reduce((sum, item) => sum + item, 0);
 }
 inputbtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -103,7 +111,7 @@ inputbtn.addEventListener("click", (e) => {
         ioe:selectedIncOrExp(),
         desc: inputSC.value,
         ct: selectedCT(),
-        ia: inputA,
+        ia:inputA.value
     };
 
     data.push(newData);
