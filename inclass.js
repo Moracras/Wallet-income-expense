@@ -13,6 +13,8 @@ let harcamaListesi = [];
 const gelirinizTd =document.getElementById("geliriniz")
 const giderinizTd =document.getElementById("gideriniz")
 const kalanTd =document.getElementById("kalan")
+const kalanTh =document.getElementById("kalanTh")
+// const kalanTh = 
 
 
 // harcama formu 
@@ -30,7 +32,6 @@ const temizleBtn = document.getElementById("temizle-btn")
 ekleBtn.addEventListener("click", (e) =>{
     e.preventDefault()
     gelirler = gelirler + Number(gelirInput.value)
-    console.log(gelirler);
     localStorage.setItem("gelirler", gelirler)
     gelirinizTd.innerText = gelirler
     ekleFormu.reset()
@@ -39,12 +40,94 @@ ekleBtn.addEventListener("click", (e) =>{
 window.addEventListener("load",()=>{
     gelirler = Number(localStorage.getItem("gelirler")) || 0
     gelirinizTd.innerText = gelirler
+    tarihInput.valueAsDate = new Date()
+    harcamaListesi = JSON.parse(localStorage.getItem("harcamalar")) || []
+
+    harcamaListesi.forEach((harcama) => harcamayiDomaYaz(harcama))
+    hesaplaVeGuncelle()
 })
 
 harcamaFormu.addEventListener("submit", (e) =>{
     e.preventDefault() //reload u engeller
 
     const yeniHarcama = {
+        id: new Date().getTime(),
+        tarih: tarihInput.value,
+        alan: harcamaAlaniInput.value,
+        miktar: miktarInput.value
+    }
+
+    // console.log(yeniHarcama);
+    harcamaFormu.reset()
+    tarihInput.valueAsDate = new Date()
+
+    harcamaListesi.push(yeniHarcama)
+    localStorage.setItem("harcamalar",JSON.stringify(harcamaListesi)),
+    harcamayiDomaYaz(yeniHarcama)
+})
+// harcamayı doma yaz 
+
+const harcamayiDomaYaz = ({id, miktar, tarih,alan}) =>{
+
+    // const{id, miktar, tarih,alan} = yeniHarcama
+// 1.yöntem 
+    // harcamaBody.innerHTML += `
+    // <tr>
+    // <td>${tarih}</td>
+    // <td>${alan}</td>
+    // <td>${miktar}</td>
+    // <td><i id=${id} class="fa-solid fa-trash-can text-danger"  type="button"></i></td>
+    
+    // </tr>
+    // `
+// 2.yöntem 
+
+ const tr = document.createElement("tr")
+ const appendTd =(content) =>{
+    const td = document.createElement("td");
+    td.textContent = content
+    return td;
+ }
+ const createLastTd =() =>{
+    const td = document.createElement("td");
+    const iElement = document.createElement("i");
+    iElement.id = id;
+    iElement.className ="fa-solid fa-trash-can text-danger"
+    iElement.type ="button";
+    td.appendChild(iElement)
+    return td;
+ }
+
+ tr.append(
+    appendTd(tarih),
+    appendTd(alan),
+    appendTd(miktar),
+    createLastTd()
+ )
+
+
+ harcamaBody.append(tr)
+}
+
+const hesaplaVeGuncelle = () =>{
+    gelirinizTd.innerText = gelirler
+
+    const giderler = harcamaListesi.reduce(
+        (toplam, harcama) => toplam + Number(harcama.miktar),0
+    )
+    giderinizTd.innerText = giderler //giderler toplamı ekrana yazdırır
+    kalanTd.innerText = gelirler - giderler
+
+    const borclu = gelirler - giderler < 0;
+
+    kalanTd.classList.toggle('text-danger',borclu)
+    kalanTh.classList.toggle('text-danger', borclu)
+}
+
+harcamaBody.addEventListener("click",(e) =>{
+    console.log(e.target);
+
+    if (e.target.classList.contains("fa-trash-can")){
         
     }
 })
