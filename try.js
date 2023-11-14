@@ -5,9 +5,16 @@ let selectIE = document.querySelector("#selectIoE")
 let inputbtn = document.querySelector("#inputbtn")
 let showSpending = document.querySelector("#showSpending")
 let expense = document.querySelector("#expense")
-let formClear = document.querySelector("#formClear")
+let clearData = document.querySelector("#clearData")
 let formSituation = document.querySelector("#formInfo")
 const exchangeRatesToLira ={USD:28.55,EURO:30.51,GBP:34.90,KWD:92.09,Gold:1776.88
+}
+const currencySymbols = {
+    USD:"$",
+    EURO:"€",
+    GBP: "£",
+    KWD:"د.ك",
+    Gold:"🟡"
 }
 
 
@@ -38,10 +45,12 @@ const show = () =>{
                 <td>${item.ioe}</td>
                 <td>${item.desc}</td>
                 <td>${item.ct}</td>
-                <td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : item.ct ==="Gold"? "🟡":""}${item.ia}</td> 
+                <td>${currencySymbols[item.ct]}${item.ia}</td> 
                 <td><button class="remove-btn" data-index="${index}" style="background-color: crimson; color: white;">Remove</button></td>
             </tr>
         `;
+        console.log(item.ct);
+        console.log(currencySymbols[item.ct]);
         showSpending.innerHTML += row;
     })
      writeIncomeExpense()
@@ -137,7 +146,7 @@ function clearLocalStorage(){
       
     
 }
-formClear.addEventListener("click", ()=>{
+clearData.addEventListener("click", ()=>{
     clearLocalStorage()
     writeIncomeExpense()
     show()

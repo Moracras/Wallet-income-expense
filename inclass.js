@@ -164,3 +164,6 @@ temizleBtn.addEventListener("click", ()=>{
         hesaplaVeGuncelle() //silindikten sonra yeniden hesapla
     }
 })
+
+
+<td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : item.ct ==="Gold"? "🟡":""}${item.ia}</td> 
