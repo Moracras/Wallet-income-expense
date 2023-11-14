@@ -144,6 +144,7 @@ const writeIncomeExpense = () => {
 //clearing all data
 function clearLocalStorage(){
     localStorage.clear();
+    data = getStorage() || []
          
 }
 clearData.addEventListener("click", ()=>{
