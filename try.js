@@ -10,6 +10,7 @@ let formSituation = document.querySelector("#formInfo")
 const exchangeRatesToLira ={USD:28.55,EURO:30.51,GBP:34.90,KWD:92.09,Gold:1776.88
 }
 const currencySymbols = {
+    TL:"₺",
     USD:"$",
     EURO:"€",
     GBP: "£",
@@ -143,8 +144,7 @@ const writeIncomeExpense = () => {
 //clearing all data
 function clearLocalStorage(){
     localStorage.clear();
-      
-    
+         
 }
 clearData.addEventListener("click", ()=>{
     clearLocalStorage()

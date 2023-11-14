@@ -166,4 +166,3 @@ temizleBtn.addEventListener("click", ()=>{
 })
 
 
-<td>${item.ct === "TL" ? "₺" : item.ct === "EURO" ? "€" : item.ct === "USD" ? "$" : item.ct === "GBP" ? "£" : item.ct === "KWD" ? "د.ك" : item.ct ==="Gold"? "🟡":""}${item.ia}</td> 
