@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>Wallet</title>
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -19,36 +21,48 @@
   <div class="container col-12 col-sm-10 col-md-8 col-lg-6">
     <div class="text-center">
       <h3>SPENDING FORM</h3>
+     
     </div>
-    <form class="container  row g-3 mb-5">
+    <form id="formInfo" class="container  row g-3 mb-5" >
       <div class="col-md-6">
         <label for="inputdate" class="form-label">Date</label>
-        <input type="date"  class="form-control" id="inputdate" >
+        <input type="date"  class="form-control" id="inputdate" required >
       </div>
       <div class="col-md-6">
-        <label for="inputSA" class="form-label">Income/Expense</label>
-        <input type="number" class="form-control" id="inputSA">
+        <label for="inputSA" class="form-label">Income/Expense</label><select name="" id="selectIoE" onchange="changingBtnColor()" class="select-option text-center w-100 h-50" required >
+          <option value=""  disable selected>Select an option</option>
+          <option  id="optionIncome" >Income</option>
+          <option  id="optionExpense">Expense</option>
+      
+      </select>
       </div>
       <div class="col-6">
         <label for="inputSC" class="form-label">Description</label>
-        <input type="text" class="form-control" id="inputSC" placeholder="Food,Fuel,Salary etc.">
+        <input type="text" class="form-control" id="inputSC" placeholder="Food,Fuel,Salary etc."required>
       </div>
-      <div class="col-6">
+      <div class=" col-6">
         <label for="select-option" class="form-label">Currency Type</label>
-            <select name="" id="select" class="select-option text-center w-100 h-50">
-                <option value="Resource" id="tl" selected>TL</option>
-                <option value="Resource" id="dinar">Kuwaiti Dinar</option>
-                <option value="Resource" id="euro">EURO</option>
-                <option value="Resource" id="usd">USD</option>
-                <option value="Resource" id="gold">Gold/gr</option>
+            <select name="select-options" id="selectOptions" class="select-option text-center w-100 h-50 "required>
+              <option value=""   disable selected>Currency Type</option>
+                <option  id="tl">TL</option>
+                <option  id="dinar">KWD</option>
+                <option id="sterlin">GBP</option>
+                <option  id="euro">EURO</option>
+                <option  id="usd">USD</option>
+                <option  id="gold">Gold</option>
+                
             </select>
        
-        
+            
        
+      </div>
+      <div class="col-md-12">
+        <label for="Amount" class="form-label"required>Amount</label>
+        <input type="number"  class="form-control" id="amountCurrency" placeholder="Please Enter Amount" required >
       </div>
 
       <div class="col-12 mt-3 text-center">
-        <button type="submit" class="btn btn-danger" id="inputbtn">Add</button>
+        <button type="submit"   class="btn btn-primary" id="inputbtn">Add</button>
       </div>
     </form>
    
@@ -57,7 +71,9 @@
         <thead class="table-primary">
           <tr>
             <th scope="col" class="col-2">Date</th>
-            <th scope="col" class="col-6">Spending</th>
+            <th scope="col" class="col-2">IncomeOrExpense</th>
+            <th scope="col" class="col-6">Description</th>
+            <th scope="col" class="col-2">Currency Type</th>
             <th scope="col" class="col-2">amount</th>
             <th scope="col" class="col-2">process</th>
           </tr>
@@ -71,23 +87,28 @@
         <tbody class="col-4">
           <tr>
             <th scope="row">Income</th>
-            <td>5000</td>
+            <td id="income">0</td>
            </tr>
           <tr>
             <th scope="row">Expense</th>
-            <td id="expense">3000</td>
+            <td id="expense">0</td>
            </tr>
           <tr>
             <th scope="row">Remain</th>
-            <td>2000</td>
+            <td id="remain">0</td>
            </tr>
         
         </tbody>
       </table>
-      <button type="submit" class="col-2 btn btn-primary mb-3">Form Clear</button>
+      <div class="text-center">
+      <button type="submit" id="clearData" class="col-2 btn  text-center btn-primary mb-3">Clear Data</button>
+    </div>
     </div>
 
+<!-- <script src="wallet.js"></script> -->
 <script src="wallet.js"></script>
+
+
 </body>
 
 </html>
